@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/atc0005/go-nagios"
 
@@ -189,9 +190,10 @@ func main() {
 
 		return
 	}
-	
+
 	log.Debug().Msg("Generating PerfData")
 	perfData := "|'cpu-usage'=" + fmt.Sprintf("%.2f", hsUsage.CPUUsedPercent) + ";" + strconv.Itoa(cfg.HostSystemCPUUseWarning) + ";" + strconv.Itoa(cfg.HostSystemCPUUseCritical)
+	perfData += " 'cpu-remaining'=" + fmt.Sprintf("%.2f", hsUsage.CPURemainingPercent)
 
 	log.Debug().Msg("Evaluating host CPU usage state")
 	switch {
@@ -216,7 +218,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		) + perfdata
+		) + perfData
 
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
@@ -243,7 +245,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		) + perfdata
+		) + perfData
 
 		nagiosExitState.ExitStatusCode = nagios.StateWARNINGExitCode
 
@@ -265,7 +267,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		) + perfdata
+		) + perfData
 
 		nagiosExitState.ExitStatusCode = nagios.StateOKExitCode
 
