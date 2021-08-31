@@ -189,6 +189,9 @@ func main() {
 
 		return
 	}
+	
+	log.Debug().Msg("Generating PerfData")
+	perfData := "|'cpu-usage'=" + fmt.Sprintf("%.2f", hsUsage.CPUUsedPercent) + ";" + strconv.Itoa(cfg.HostSystemCPUUseWarning) + ";" + strconv.Itoa(cfg.HostSystemCPUUseCritical)
 
 	log.Debug().Msg("Evaluating host CPU usage state")
 	switch {
@@ -213,7 +216,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		)
+		) + perfdata
 
 		nagiosExitState.ExitStatusCode = nagios.StateCRITICALExitCode
 
@@ -240,7 +243,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		)
+		) + perfdata
 
 		nagiosExitState.ExitStatusCode = nagios.StateWARNINGExitCode
 
@@ -262,7 +265,7 @@ func main() {
 			c.Client,
 			hsVMs,
 			hsUsage,
-		)
+		) + perfdata
 
 		nagiosExitState.ExitStatusCode = nagios.StateOKExitCode
 
