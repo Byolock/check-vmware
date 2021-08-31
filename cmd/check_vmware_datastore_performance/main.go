@@ -95,8 +95,8 @@ func main() {
 	log := cfg.Log.With().
 		Str("datastore_name", cfg.DatastoreName).
 		Str("datacenter_name", dcName).
-		Int("datastore_critical_usage", cfg.DatastoreLatencyCritical).
-		Int("datastore_warning_usage", cfg.DatastoreLatencyWarning).
+		Float64("datastore_critical_usage", cfg.DatastoreLatencyCritical).
+		Float64("datastore_warning_usage", cfg.DatastoreLatencyWarning).
 		Logger()
 
 	log.Debug().Msg("Logging into vSphere environment")
@@ -119,6 +119,8 @@ func main() {
 		return
 	}
 	log.Debug().Msg("Successfully logged into vSphere environment")
+
+	log.Debug().Msg("Successfully retrieved datastore by name")
 
 	defer func() {
 		if err := c.Logout(ctx); err != nil {
@@ -155,13 +157,11 @@ func main() {
 		return
 	}
 
-	log.Debug().Msg("Successfully retrieved datastore by name")
+	srm := object.NewStorageResourceManager(c.Client)
+	result, err := srm.QueryDatastorePerformanceSummary(ctx, object.NewDatastore(c.Client, datastore.Reference()))
+	_ = result
+	_ = err
 
-	xc := c.Client
-	srm := object.NewStorageResourceManager(xc)
-	result, err := srm.QueryDatastorePerformanceSummary(ctx, object.NewDatastore(xc, datastore.Reference()))
-
-	//wird in Internal/VSphere definiert
 	log.Debug().Msg("Generating datastore performance summary")
 	dsUsage := vsphere.NewDatastoreUsageSummary(
 		datastore,

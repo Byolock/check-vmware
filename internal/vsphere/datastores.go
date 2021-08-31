@@ -86,12 +86,12 @@ func NewDatastoreUsageSummary(ds mo.Datastore, criticalThreshold int, warningThr
 // NewDatastoreUsageSummary receives a Datastore and generates summary
 // information used to determine if usage levels have crossed user-specified
 // thresholds.
-func NewDatastorePerformanceSummary(ds mo.Datastore, criticalThreshold int, warningThreshold int) DatastoreUsageSummary {
+func NewDatastorePerformanceSummary(ds mo.Datastore, criticalThreshold int, warningThreshold int) DatastorePerformanceSummary {
 
-	datastoreReadIops := 100
-	datastoreReadLatency := 100
-	datastoreWriteIops := ds.Summary.FreeSpace
-	datastoreWriteLatency := ds.Summary.Capacity
+	datastoreReadIops := 100.00
+	datastoreReadLatency := 100.00
+	datastoreWriteIops := 100.00
+	datastoreWriteLatency := 100.00
 
 	dsPerf := DatastorePerformanceSummary{
 		Datastore:         ds,

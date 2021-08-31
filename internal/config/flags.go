@@ -158,6 +158,18 @@ func (c *Config) handleFlagsConfig(pluginType PluginType) {
 		flag.IntVar(&c.DatastoreUsageCritical, "ds-usage-critical", defaultDatastoreUsageCritical, datastoreUsageCriticalFlagHelp)
 		flag.IntVar(&c.DatastoreUsageCritical, "dsuc", defaultDatastoreUsageCritical, datastoreUsageCriticalFlagHelp+" (shorthand)")
 
+	case pluginType.DatastoresPerformance:
+
+		flag.StringVar(&c.DatacenterName, "dc-name", defaultDatacenterName, datacenterNameFlagHelp)
+
+		flag.StringVar(&c.DatastoreName, "ds-name", defaultDatastoreName, datastoreNameFlagHelp)
+
+		flag.IntVar(&c.DatastoreUsageWarning, "ds-usage-warning", defaultDatastoreUsageWarning, datastoreUsageWarningFlagHelp)
+		flag.IntVar(&c.DatastoreUsageWarning, "dsuw", defaultDatastoreUsageWarning, datastoreUsageWarningFlagHelp+" (shorthand)")
+
+		flag.IntVar(&c.DatastoreUsageCritical, "ds-usage-critical", defaultDatastoreUsageCritical, datastoreUsageCriticalFlagHelp)
+		flag.IntVar(&c.DatastoreUsageCritical, "dsuc", defaultDatastoreUsageCritical, datastoreUsageCriticalFlagHelp+" (shorthand)")
+
 	case pluginType.HostSystemMemory:
 
 		flag.StringVar(&c.DatacenterName, "dc-name", defaultDatacenterName, datacenterNameFlagHelp)
