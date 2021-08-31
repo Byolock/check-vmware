@@ -165,6 +165,7 @@ const (
 	PluginTypeSnapshotsCount                 string = "snapshots-count"
 	PluginTypeSnapshotsSize                  string = "snapshots-size"
 	PluginTypeDatastoresSize                 string = "datastore-size"
+	PluginTypeDatastoresPerformance          string = "datastore-performance"
 	PluginTypeResourcePoolsMemory            string = "resource-pools-memory"
 	PluginTypeVirtualCPUsAllocation          string = "virtual-cpus-allocation"
 	PluginTypeVirtualHardwareVersion         string = "virtual-hardware-version"

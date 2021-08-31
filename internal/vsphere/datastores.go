@@ -27,6 +27,10 @@ import (
 // resource pools have exceeded a given threshold
 var ErrDatastoreUsageThresholdCrossed = errors.New("datastore usage exceeds specified threshold")
 
+// ErrDatastoreUsageThresholdCrossed indicates that specified
+// resource pools have exceeded a given threshold
+var ErrDatastoreLatencyThresholdCrossed = errors.New("datastore latency exceeds specified threshold")
+
 // DatastoreIDToNameIndex maps a Datastore's ID value to its name.
 type DatastoreIDToNameIndex map[string]string
 
@@ -40,6 +44,17 @@ type DatastoreUsageSummary struct {
 	StorageRemaining        int64
 	CriticalThreshold       int
 	WarningThreshold        int
+}
+
+type DatastorePerformanceSummary struct {
+	Datastore   mo.Datastore
+	ReadIops    float64
+	ReadLatency float64
+	//VmLatency    float64
+	WriteIops         float64
+	WriteLatency      float64
+	CriticalThreshold int
+	WarningThreshold  int
 }
 
 // NewDatastoreUsageSummary receives a Datastore and generates summary
@@ -65,6 +80,30 @@ func NewDatastoreUsageSummary(ds mo.Datastore, criticalThreshold int, warningThr
 	}
 
 	return dsUsage
+
+}
+
+// NewDatastoreUsageSummary receives a Datastore and generates summary
+// information used to determine if usage levels have crossed user-specified
+// thresholds.
+func NewDatastorePerformanceSummary(ds mo.Datastore, criticalThreshold int, warningThreshold int) DatastoreUsageSummary {
+
+	datastoreReadIops := 100
+	datastoreReadLatency := 100
+	datastoreWriteIops := ds.Summary.FreeSpace
+	datastoreWriteLatency := ds.Summary.Capacity
+
+	dsPerf := DatastorePerformanceSummary{
+		Datastore:         ds,
+		ReadIops:          datastoreReadIops,
+		ReadLatency:       datastoreReadLatency,
+		WriteIops:         datastoreWriteIops,
+		WriteLatency:      datastoreWriteLatency,
+		CriticalThreshold: criticalThreshold,
+		WarningThreshold:  warningThreshold,
+	}
+
+	return dsPerf
 
 }
 

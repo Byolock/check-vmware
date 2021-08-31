@@ -37,6 +37,7 @@ type PluginType struct {
 	SnapshotsCount                 bool
 	SnapshotsSize                  bool
 	DatastoresSize                 bool
+	DatastoresPerformance          bool
 	ResourcePoolsMemory            bool
 	VirtualCPUsAllocation          bool
 	VirtualHardwareVersion         bool
@@ -384,6 +385,14 @@ type Config struct {
 	// usage (as a whole number) when a CRITICAL threshold is reached.
 	DatastoreUsageCritical int
 
+	// DatastoreLatencyWarning specifies the latency of a datastore's storage
+	// (in ms) when a WARNING threshold is reached.
+	DatastoreLatencyWarning float64
+
+	// DatastoreLatencyWarning specifies the latency of a datastore's storage
+	// (in ms) when a CRITICAL threshold is reached.
+	DatastoreLatencyCritical float64
+
 	// SnapshotsSizeCritical specifies the cumulative size in GB of all
 	// snapshots for a VM when a WARNING threshold is reached.
 	SnapshotsSizeWarning int
@@ -506,6 +515,9 @@ func pluginTypeLabel(pluginType PluginType) string {
 
 	case pluginType.DatastoresSize:
 		label = PluginTypeDatastoresSize
+
+	case pluginType.DatastoresPerformance:
+		label = PluginTypeDatastoresPerformance
 
 	case pluginType.ResourcePoolsMemory:
 		label = PluginTypeResourcePoolsMemory
